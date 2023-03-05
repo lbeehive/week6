@@ -1,0 +1,24 @@
+import React from "react";
+
+function SearchButton(props) {
+    return (
+        <form>
+            <input 
+            type="text"
+            id="'new_td_input"
+            className="inputSearch"
+            name="text"
+            autoComplete="off"
+          />
+          <button 
+            type="button"
+            className="buttonSearch"
+             >
+            Search
+          </button>
+        </form>
+
+    )
+}
+
+export default SearchButton;

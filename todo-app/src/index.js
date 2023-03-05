@@ -4,13 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-
+const INITIAL_TDS = [
+  { id: uniqueId, name: "Eat", completed: true, key: uniqueId },
+  { id: uniqueId, name: "Sleep", completed: false, key: uniqueId },
+  { id: uniqueId, name: "Repeat", completed: false, key: uniqueId }
+];
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <App tasks={INITIAL_TDS} />
   </React.StrictMode>
 );
 
