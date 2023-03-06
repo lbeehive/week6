@@ -1,58 +1,83 @@
 import React, { useState } from "react";
 import Form from "./components/Form";
-import SearchButton from "./components/SearchButton";
+import FilterButton from "./components/FilterButton";
 import Todo from "./components/Todo";
-
-const uniqueId = () => parseInt(Date.now() * Math.random()).toString();
-
-
+import { v4 as uuid } from 'uuid';
+//import { format } from 'date-fns';
 
 function App(props) {
   const [tasks, setTasks] = useState(props.tasks);
-
+  
   function addTask(name) {
-    const newTask = { id: uniqueId, name, completed: false, key: uniqueId};
-    setTasks([...tasks, newTask]);
+    //const uniqueId = () => "todo-"+parseInt(Date.now() * Math.random()).toString();
+    const uniqueid_full = uuid();
+    const uniqueId = uniqueid_full.slice(0,8);
+    const newTask = { id: uniqueId, name, dateAdded: Date.now(), completed: false };
+    //setTasks([...tasks, newTask].sort((a, b) => b.name > a.name ? 1 : -1,));
+    setTasks([...tasks, newTask].sort((a, b) => b.dateAdded - a.dateAdded));
   }
 
   function toggleTaskCompleted(id) {
-    console.log(tasks[0])
+    const updatedTasks = tasks.map((task) => {
+      // if this task has the same ID as the edited task
+      if (id === task.id) {
+        // use object spread to make a new object
+        // whose `completed` prop has been inverted
+        return {...task, completed: !task.completed}
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
   }
 
-  const taskList = props.tasks.map((task) =>(
-    <Todo 
-      id={task.id}
-      name={task.name} 
-      completed={task.completed}
-      key={uniqueId} 
-      toggleTaskCompleted={toggleTaskCompleted}
-      />
-    )
-  );
-  
-  return (
-    <div className="td_overall">
-      <h1>My To Do List</h1>
-        
-        <Form addTask={addTask} />
+  function deleteTask(id) {
+    const remainingTasks = tasks.filter((task) => id !== task.id);
+    setTasks(remainingTasks);
+  }
 
-        <h2 className="label_wrapper">
-          <label htmlFor="new_td_inputs" className="label_td">
-            To Do Items
-          </label>
-        </h2>
-         
-        <ul 
-          className="list_td"
-          aria-labelledby="list_heading"
-        >
-            {taskList}
-        </ul>
-    <div className="search_button">
-          <SearchButton />
-    </div>  
+  function editTask(id, newName) {
+    const editedTaskList = tasks.map((task) => {
+    // if this task has the same ID as the edited task
+      if (id === task.id) {
+        //
+        return {...task, name: newName}
+      }
+      return task;
+    });
+    setTasks(editedTaskList);
+  }
+
+  const taskList = tasks.map((task) => (
+    <Todo
+      id={task.id}
+      name={task.name}
+      date={task.dateAdded}
+      completed={task.completed}
+      key={task.id}
+      toggleTaskCompleted={toggleTaskCompleted}
+      deleteTask={deleteTask}
+      editTask={editTask}
+    />
+
+  ));
+
+  return (
+    <div className="todoapp stack-large">
+      <h1>TodoMatic</h1>
+      <Form addTask={addTask} />
+      <div className="filters btn-group stack-exception">
+        <FilterButton />
+        <FilterButton />
+        <FilterButton />
+      </div>
+      <h2 id="list-heading">3 tasks remaining</h2>
+      <ul
+        className="todo-list stack-large stack-exception"
+        aria-labelledby="list-heading"
+      >
+        {taskList}
+      </ul>
     </div>
   );
 }
-
 export default App;
