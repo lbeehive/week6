@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Form from "./components/Form";
-import FilterButton from "./components/FilterButton";
+//import Search from "./components/Search";
 import Todo from "./components/Todo";
 import { v4 as uuid } from 'uuid';
 //import { format } from 'date-fns';
@@ -29,7 +29,7 @@ function App(props) {
     });
     setTasks(updatedTasks);
   }
-
+/*deleteTask and editTask for later
   function deleteTask(id) {
     const remainingTasks = tasks.filter((task) => id !== task.id);
     setTasks(remainingTasks);
@@ -46,7 +46,7 @@ function App(props) {
     });
     setTasks(editedTaskList);
   }
-
+*/
   const taskList = tasks.map((task) => (
     <Todo
       id={task.id}
@@ -55,22 +55,16 @@ function App(props) {
       completed={task.completed}
       key={task.id}
       toggleTaskCompleted={toggleTaskCompleted}
-      deleteTask={deleteTask}
-      editTask={editTask}
+      //deleteTask={deleteTask}
+      //editTask={editTask}
     />
 
   ));
-
   return (
     <div className="todoapp stack-large">
-      <h1>TodoMatic</h1>
+      <h1>To Do List</h1>
       <Form addTask={addTask} />
-      <div className="filters btn-group stack-exception">
-        <FilterButton />
-        <FilterButton />
-        <FilterButton />
-      </div>
-      <h2 id="list-heading">3 tasks remaining</h2>
+      
       <ul
         className="todo-list stack-large stack-exception"
         aria-labelledby="list-heading"
@@ -79,5 +73,25 @@ function App(props) {
       </ul>
     </div>
   );
+/* Search button for later
+  return (
+    <div className="todoapp stack-large">
+      <h1>To Do List</h1>
+      <Form addTask={addTask} />
+      
+      <div className="filters btn-group stack-exception">
+        <Search />
+        
+      </div>
+      
+      <ul
+        className="todo-list stack-large stack-exception"
+        aria-labelledby="list-heading"
+      >
+        {taskList}
+      </ul>
+    </div>
+  );
+*/
 }
 export default App;
